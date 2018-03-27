@@ -12,6 +12,7 @@ class Editor:
         self.username = None
         self.menu_map = {
             "login": self.login,
+            "register": self.register,
             "test": self.test,
             "change": self.change,
             "quit": self.quit
@@ -56,6 +57,31 @@ class Editor:
             else:
                 self.username = username
 
+    def register(self):
+        logged_in = False
+        while not logged_in:
+            print("Hello we help you regist in our program!")
+            username = input("username: ")
+            password = input("password: ")
+            secret_question = input("secret question: ")
+            email = input("email: ")
+            captcha = input("input {}: ".format(self.CAPTCHA()))
+            while not self.check_captcha(captcha):
+                captcha = input("input {}: ".format(self.CAPTCHA()))
+            try:
+                authentificator.add_user(username, password, secret_question,\
+                                         email)
+            except UsernameAlreadyExists:
+                print("Sorry, that username does exist")
+            except PasswordTooShort:
+                print("Sorry you password is too short")
+            except Secret_questionTooShort:
+                print("Sorry, you secret question is too short")
+            else:
+                logged_in = authentificator.login(username, password, \
+                                                  secret_question)
+                self.username = username
+
     def is_permitted(self, permission):
         try:
             authorizor.check_permission(
@@ -89,6 +115,7 @@ class Editor:
                     print("""
     Please enter a command:
     \tlogin\tLogin
+    \tregister\tRegister
     \ttest\tTest the program
     \tchange\tChange the program
     \tquit\tQuit
