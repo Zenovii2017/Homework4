@@ -1,4 +1,10 @@
 def all_prefixes(sentence):
+    """
+    (str) -> set
+    make sentences that start on first letter of sentences
+    :param sentence: str
+    :return: set
+    """
     sentences = set()
     while sentence[0] == ' ':
         sentence = sentence[1:]
